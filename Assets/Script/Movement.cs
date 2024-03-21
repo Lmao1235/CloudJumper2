@@ -1,40 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class Movement : MonoBehaviour
 {
+    private Rigidbody rb;
     
 
     [SerializeField] private float speed;
 
-    Vector3 movement;
+    [SerializeField] private float gravity;
+    [SerializeField] private float jumpforce;
 
-    float HorizonInput;
-    float VertaicalInput;
+    private CharacterController controller;
+    private Transform cameraTransform;
+    private Vector3 velocity;
 
-
-    public Rigidbody rb;
-
-   
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        cameraTransform = Camera.main.transform; 
+    }
 
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.z = Input.GetAxisRaw("Vertical");
+        
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
         
+        Vector3 direction = cameraTransform.forward * vertical + cameraTransform.right * horizontal;
+        direction.y = 0f; 
 
-    }
+        
+        controller.Move(direction * speed * Time.deltaTime);
 
-    private void FixedUpdate()
-    {
-        transform.Translate(Vector3.forward * Time.deltaTime * VertaicalInput);
-        //transform.Translate(-Vector3.forward * Time.deltaTime * HorizonInput);
-        transform.Rotate(Vector3.up * HorizonInput * speed * Time.deltaTime);
+        Vector3 gravityVector = Vector3.up * gravity;
+        controller.Move(gravityVector * Time.deltaTime);
 
+        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            Vector3 Jumpheight = Vector3.up * jumpforce;
+            controller.Move(Jumpheight * Time.deltaTime);
+        }
 
     }
 }
