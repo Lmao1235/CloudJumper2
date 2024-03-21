@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
     
 
     [SerializeField] private float speed;
@@ -18,6 +18,9 @@ public class Movement : MonoBehaviour
     private CharacterController controller;
     private Transform cameraTransform;
     private Vector3 velocity;
+
+    
+    private bool isJumping = false;
 
     void Start()
     {
@@ -41,11 +44,21 @@ public class Movement : MonoBehaviour
         Vector3 gravityVector = Vector3.up * gravity;
         controller.Move(gravityVector * Time.deltaTime);
 
+
         if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 Jumpheight = Vector3.up * jumpforce;
-            controller.Move(Jumpheight * Time.deltaTime);
+            isJumping = true;
         }
 
+        if (isJumping)
+        {
+            Vector3 jumpVelocity = Vector3.up * jumpforce;
+            Vector3 jumpHeight = Vector3.up * jumpforce;
+            controller.Move(jumpHeight * Time.deltaTime);
+            velocity.y = jumpVelocity.y;
+            isJumping = false;
+        }
     }
+
+    
 }
