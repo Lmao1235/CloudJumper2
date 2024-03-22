@@ -11,6 +11,8 @@ public class Movement : MonoBehaviour
     private Vector2 MouseInput;
     private float xRot;
 
+    [SerializeField] private LayerMask Floormask;
+    [SerializeField] private Transform FeetTransform;
     [SerializeField] private Transform PlayerCamera;
     [SerializeField] private Rigidbody rb;
 
@@ -34,7 +36,11 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector3.up * Jumpforce, ForceMode.Force);
+            if(Physics.CheckSphere(FeetTransform.position, 0.1f, Floormask))
+            {
+                rb.AddForce(Vector3.up * Jumpforce, ForceMode.Force); 
+            }
+            
         }
 
 
