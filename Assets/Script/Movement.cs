@@ -7,58 +7,46 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    private Vector3 PlayerMovement;
+    private Vector2 MouseInput;
+    private float xRot;
+
+    [SerializeField] private Transform PlayerCamera;
     [SerializeField] private Rigidbody rb;
-    
 
-    [SerializeField] private float speed;
-
-    [SerializeField] private float gravity;
-    [SerializeField] private float jumpforce;
-
-    private CharacterController controller;
-    private Transform cameraTransform;
-    private Vector3 velocity;
-
-    
-    private bool isJumping = false;
-
-    void Start()
-    {
-        controller = GetComponent<CharacterController>();
-        cameraTransform = Camera.main.transform; 
-    }
+    [SerializeField] private float Speed;
+    [SerializeField] private float Jumpforce;
+    [SerializeField] private float Sensitivity;
 
     void Update()
     {
-        
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        PlayerMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        MouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        MovePlayer();
+        MoveCamera();
 
-        
-        Vector3 direction = cameraTransform.forward * vertical + cameraTransform.right * horizontal;
-        direction.y = 0f; 
-
-        
-        controller.Move(direction * speed * Time.deltaTime);
-
-        Vector3 gravityVector = Vector3.up * gravity;
-        controller.Move(gravityVector * Time.deltaTime);
-
-
-        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumping = true;
-        }
-
-        if (isJumping)
-        {
-            Vector3 jumpVelocity = Vector3.up * jumpforce;
-            Vector3 jumpHeight = Vector3.up * jumpforce;
-            controller.Move(jumpHeight * Time.deltaTime);
-            velocity.y = jumpVelocity.y;
-            isJumping = false;
-        }
     }
 
-    
+    private void MovePlayer()
+    {
+        Vector3 MoveVector = transform.TransformDirection(PlayerMovement) * Speed;
+        rb.velocity = new Vector3(MoveVector.x, rb.velocity.y, MoveVector.z);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * Jumpforce, ForceMode.Force);
+        }
+
+
+
+
+    }
+
+    private void MoveCamera()
+    {
+        xRot -= MouseInput.y * Sensitivity;
+
+        transform.Rotate(0f, MouseInput.x * Sensitivity, 0f);
+        PlayerCamera.transform.localRotation = Quaternion.Euler(xRot, 0f, 0f);
+    }
 }
