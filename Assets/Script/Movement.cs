@@ -55,4 +55,5 @@ public class Movement : MonoBehaviour
         transform.Rotate(0f, MouseInput.x * Sensitivity, 0f);
         PlayerCamera.transform.localRotation = Quaternion.Euler(xRot, 0f, 0f);
     }
+
 }
