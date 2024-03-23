@@ -6,8 +6,15 @@ using UnityEngine.SceneManagement;
 public class FGB : MonoBehaviour
 {
     [SerializeField] private int SceneBuild;
+
+    private void Start()
+    {
+
+        
+    }
     public void Goback()
     {
+
         SceneManager.LoadScene(SceneBuild, LoadSceneMode.Single); //กลับไปหน้า Menu
     }
 }

@@ -14,7 +14,7 @@ public class CoinCollect : MonoBehaviour
         if (other.transform.tag == "Coins")
         {
             Coins++; //บวกเหรียญ
-            cointext.text = "Coins:" + Coins.ToString();
+            cointext.text = "Coins: " + Coins.ToString();
             Debug.Log(Coins);
             Destroy(other.gameObject); //เก็บเหรียญ
         }
