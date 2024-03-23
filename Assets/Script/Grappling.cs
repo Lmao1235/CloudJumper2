@@ -6,19 +6,19 @@ public class Grappling : MonoBehaviour
 {
     private LineRenderer LR;
     private Vector3 Grapplepoint;
-    [SerializeField] private LayerMask CanGrapple;
-    [SerializeField] Transform gunter,camera, player;
-    [SerializeField] private float MaxiDis;
+    [SerializeField] private LayerMask CanGrapple; //เช็คว่าเกาะได้
+    [SerializeField] Transform gunter,camera, player; 
+    [SerializeField] private float MaxiDis; //ความยาวของเลือก
     private SpringJoint joint;
 
-    void Start()
+    void Start() 
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked; //Lock cursor
     }
     private void Awake()
     {
-        LR = GetComponent<LineRenderer>();
+        LR = GetComponent<LineRenderer>(); //โหลดเส้น
     }
 
     void Update()
@@ -27,20 +27,20 @@ public class Grappling : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Startgrapple();
+            Startgrapple(); //ยิงเชือก
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            Stopgrapple();
+            Stopgrapple();  //เก็บเชือก
         }
     }
 
     void LateUpdate()
     {
-        Drawrope();
+        Drawrope(); //โหลดเชือก
     }
 
-    void Startgrapple()
+    void Startgrapple() //ยิงเชือก
     {
         RaycastHit hit;
         if (Physics.Raycast(camera.position, camera.forward, out hit, MaxiDis, CanGrapple))
@@ -56,9 +56,9 @@ public class Grappling : MonoBehaviour
 
             joint.minDistance = disfrompoint * 0.25f;
 
-            joint.spring = 4.5f;
-            joint.spring = 7f;
-            joint.massScale = 5f;
+            joint.spring = 3f;  //ความแข็งแรง
+            joint.damper = 3f;  //ความยืดหยุ่น
+            joint.massScale = 3f; //ความคุมค่าน้ำหนักที่มีต่อ joint
 
             LR.positionCount = 2;
 
@@ -69,7 +69,7 @@ public class Grappling : MonoBehaviour
     }
 
     
-    void Stopgrapple()
+    void Stopgrapple() //เก็บเชือก
     {
         LR.positionCount = 0;
         Destroy(joint);
@@ -77,7 +77,7 @@ public class Grappling : MonoBehaviour
 
     private Vector3 Currentgrappleposition;
 
-    void Drawrope()
+    void Drawrope() //โหลดเชือก
     {
         if (!joint) return;
 

@@ -10,7 +10,7 @@ public class Fail : MonoBehaviour
     {
         if (collision.gameObject.name == "Sea")
         {
-            SceneManager.LoadScene(SceneBuild, LoadSceneMode.Single);
+            SceneManager.LoadScene(SceneBuild, LoadSceneMode.Single); //เปลี่ยนไปหน้า Game Over
         }
 
 

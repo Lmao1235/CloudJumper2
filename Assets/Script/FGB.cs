@@ -8,6 +8,6 @@ public class FGB : MonoBehaviour
     [SerializeField] private int SceneBuild;
     public void Goback()
     {
-        SceneManager.LoadScene(SceneBuild, LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneBuild, LoadSceneMode.Single); //กลับไปหน้า Menu
     }
 }

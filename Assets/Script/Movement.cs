@@ -11,32 +11,32 @@ public class Movement : MonoBehaviour
     private Vector2 MouseInput;
     private float xRot;
 
-    [SerializeField] private LayerMask Floormask;
+    [SerializeField] private LayerMask Floormask; 
     [SerializeField] private Transform FeetTransform;
     [SerializeField] private Transform PlayerCamera;
     [SerializeField] private Rigidbody rb;
 
-    [SerializeField] private float Speed;
-    [SerializeField] private float Jumpforce;
-    [SerializeField] private float Sensitivity;
+    [SerializeField] private float Speed; //ความเร็วการวิ่ง
+    [SerializeField] private float Jumpforce; //ความเร็วการกระโดด
+    [SerializeField] private float Sensitivity; //ความ sensitive ของกล้อง
 
     void Update()
     {
-        PlayerMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        PlayerMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")); 
         MouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        MovePlayer();
-        MoveCamera();
+        MovePlayer(); //ขยับตัว Player
+        MoveCamera(); //ขยับกล้อง
 
     }
 
-    private void MovePlayer()
+    private void MovePlayer() //ขยับตัว Player
     {
-        Vector3 MoveVector = transform.TransformDirection(PlayerMovement) * Speed;
+        Vector3 MoveVector = transform.TransformDirection(PlayerMovement) * Speed; //การเดิน
         rb.velocity = new Vector3(MoveVector.x, rb.velocity.y, MoveVector.z);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) //การกระโดด
         {
-            if(Physics.CheckSphere(FeetTransform.position, 0.1f, Floormask))
+            if(Physics.CheckSphere(FeetTransform.position, 0.1f, Floormask)) //การกระโดด
             {
                 rb.AddForce(Vector3.up * Jumpforce, ForceMode.Force); 
             }
@@ -48,7 +48,7 @@ public class Movement : MonoBehaviour
 
     }
 
-    private void MoveCamera()
+    private void MoveCamera() //ขยับกล้อง
     {
         xRot -= MouseInput.y * Sensitivity;
 
