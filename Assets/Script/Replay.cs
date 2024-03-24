@@ -19,3 +19,4 @@ public class Replay : MonoBehaviour
         Application.Quit(); //ออกเกม
     }
 }
+ 
